@@ -22,8 +22,8 @@
         el: null,
         penColor: 'black',
         penDown: false,
-        cols: 40,
-        rows: 40,
+        cols: 50,
+        rows: 50,
     }
 
     $.fn.paintbox = function(configOrCommand) {
