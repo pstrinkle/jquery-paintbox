@@ -28,6 +28,7 @@ You should specify options like in usage example above.
 | rows | integer | `50` | Number of rows. |
 | cols | integer | `50` | Number of columns. |
 | cell | integer | `10` | Cell dimension in pixels |
+| colors | array | ... | Override colors for pallete via array of CSS colors. |
 
 License
 -------

@@ -51,7 +51,7 @@
                 $(this).css('background-color', instance.penColor);
             };
             var colorSelect = function(event) {
-                instance.penColor = $(this).attr('id');
+                instance.penColor = $(this).data('color');
             };
 
             el.append($('<div>', {id: baseId + 'pen_box', style: 'clear:both;'}));
@@ -110,7 +110,8 @@
             
             /* create pen boxes. */
             $.each(instance.colors, function(index, element) {
-                var $color = $('<div>', {id: element, style: "float:left"});
+                var $color = $('<div>', {id: 'color_' + index, style: "float:left"});
+                $color.data('color', element);
                 $pens.append($color);
             });
 
@@ -121,9 +122,13 @@
                 $(element).css('float', 'left');
                 $(element).css('display', 'inline');
 
+                /* Seems silly but originally we had spacer cells that didn't 
+                 * have IDs.
+                 */
                 var id = $(element).attr('id');
                 if (id) {
-                    $(element).css('background-color', id);
+                    var color = $(element).data('color');
+                    $(element).css('background-color', color);
                     $(element).on('click', colorSelect);
 
                     if (id === 'black') {

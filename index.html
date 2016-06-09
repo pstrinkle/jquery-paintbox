@@ -73,6 +73,12 @@
             <td><code>10</code></td>
             <td>Dimensions for pixel cell square.</td>
           </tr>
+          <tr>
+            <td>colors</td>
+            <td>array</td>
+            <td>...</td>
+            <td>Override colors for pallete via array of CSS colors.</td>
+          </tr>
         </tbody>
       </table>
       </div>
@@ -131,6 +137,17 @@ $(function() {
 });
 </script>
 
+      <h4>Specified other colors</h4>
+      <p>Replace the colors with our own.</p>
+      <pre class="prettyprint lang-js">
+$('#container_4').paintbox({colors: ['red', 'purple', 'fuchsia', 'green']});</pre>
+      <p>I put a black background the div because it's default off-color is white.</p>
+      <div id='container_4' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+<script>
+$(function() {
+    $('#container_4').paintbox({colors: ['red', 'purple', 'fuchsia', 'green']});
+});
+</script>
 
       <h3>License</h3>
       <p><a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></p>
