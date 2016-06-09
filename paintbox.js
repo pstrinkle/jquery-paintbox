@@ -107,7 +107,13 @@
             });
 
             /* Create the pen boxes. */
-            
+            if (instance.colors.length == 0) {
+                throw Error("No color palette specified!");
+            }
+
+            /* set default starting color to one of the provided (or default) */
+            instance.penColor = instance.colors[0];
+
             /* create pen boxes. */
             $.each(instance.colors, function(index, element) {
                 var $color = $('<div>', {id: 'color_' + index, style: "float:left"});
