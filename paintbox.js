@@ -20,17 +20,30 @@
         },
 
         el: null,
+        elId: '',
         penColor: 'black',
         penDown: false,
         cols: 50,
         rows: 50,
+        colors : ['black', 'red', 'green', 'blue', 'white', 'yellow', 'pink'],
     }
 
-    $.fn.paintbox = function(configOrCommand) {
+    /**
+     * Set up a paintbox.
+     * 
+     * @param configOrCommand - Config object or command name
+     *     Example: { ... };
+     *     you may set any public property (see above);
+     *
+     * @param commandArgument - Some commands (like 'increment') may require an 
+     *     argument
+     */
+    $.fn.paintbox = function(configOrCommand, commandArgument) {
         var dataName = 'paintbox';
-            
+
         var buildIt = function(instance) {
             var el = instance.el;
+            var baseId = instance.elId;
 
             var clicked = function(event) {
                 /* click's this is the individual element */
@@ -40,11 +53,12 @@
                 instance.penColor = $(this).attr('id');
             };
 
-            el.append($('<div>', {id: 'pen_box', style: 'clear:both;'}));
-            el.append($('<div>', {id: 'master_box', style: 'clear:both;'}));
+            el.append($('<div>', {id: baseId + 'pen_box', style: 'clear:both;'}));
+            el.append($('<div>', {id: baseId + 'master_box', style: 'clear:both;'}));
 
-            var $dest = $('#master_box');
-            var $pens = $('#pen_box');
+            var mId = '#' + baseId + 'master_box';            
+            var $dest = $(mId);
+            var $pens = $('#' + baseId + 'pen_box');
             var i = 0, j = 0;
             var itm = 'box';
 
@@ -72,7 +86,8 @@
                 }
             }
 
-            $('.box').hover(function(event) {
+            /* this won't work with multiple paintbox's on the same page. */
+            $(mId + ' .box').hover(function(event) {
                 /* if pen is selected, and mousedown has been activated, 
                  * then we draw, otherwise we temporarily hover.
                  */                        
@@ -87,20 +102,15 @@
                  */
                 $(this).css('border', 'none');
             });
-                
-            var colors = ['black', 'red', 'green', 'blue',
-                          'white', 'yellow', 'pink'];
-                
+
             /* create pen boxes. */
-            $.each(colors, function(index, element) {
+            $.each(instance.colors, function(index, element) {
                 var $color = $('<div>', {id: element, style: "float:left"});
-                var $second = $('<div>', {style: "float:left"});
                 $pens.append($color);
-                $pens.append($second);
             });
 
             /* just do this next. */
-            $.each($('#pen_box').children(), function(index, element) {
+            $.each($pens.children(), function(index, element) {
                 $(element).css('width', '10px');
                 $(element).css('height', '10px');
                 $(element).css('float', 'left');
@@ -130,9 +140,6 @@
             });
         };
 
-        /* handle init here, I later plan to use other options, such as 
-         * formatting.
-         */
         return this.each(function() {
             var el = $(this), instance = el.data(dataName),
                 config = $.isPlainObject(configOrCommand) ? configOrCommand : {};
@@ -144,6 +151,8 @@
                 var initialConfig = $.extend({}, el.data());
                 config = $.extend(initialConfig, config);
                 config.el = el;
+                config.elId = el.attr('id');
+                // throw exception if no ID is set for this.
 
                 instance = new PaintBox(config);
                 el.data(dataName, instance);

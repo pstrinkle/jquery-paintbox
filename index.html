@@ -91,11 +91,25 @@
       <p>I will put a few demos here.</p>
 
       <h4>Default paintbox</h4>
+      <pre class="prettyprint lang-js">
+$('#container').paintbox({});</pre>
       <p>I put a black background the div because it's default off-color is white.</p>
       <div id='container' style='background-color:black;border:5px solid black;display:table-cell;'></div>
 <script>
 $(function() {
     $('#container').paintbox({});
+});
+</script>
+
+      <h4>Specified dimensions</h4>
+      <p>A box where we specify the dimensions</p>
+      <pre class="prettyprint lang-js">
+$('#container_2').paintbox({rows: 25, cols: 25});</pre>
+      <p>I put a black background the div because it's default off-color is white.</p>
+      <div id='container_2' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+<script>
+$(function() {
+    $('#container_2').paintbox({rows: 25, cols: 25});
 });
 </script>
 
