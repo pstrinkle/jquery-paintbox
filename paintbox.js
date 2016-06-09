@@ -25,6 +25,7 @@
         penDown: false,
         cols: 50,
         rows: 50,
+        cell: 10,
         colors : ['black', 'red', 'green', 'blue', 'white', 'yellow', 'pink'],
     }
 
@@ -63,17 +64,19 @@
             var itm = 'box';
 
             /* fixup grid container. */
-            var master_width = instance.cols * 10;
-            var master_height = instance.rows * 10;
+            var master_width = instance.cols * instance.cell;
+            var master_height = instance.rows * instance.cell;
             $dest.css('width', master_width + 'px');
             $dest.css('height', master_height + 'px');
-                    
+            
+            var dim = instance.cell + 'px';
+
             /* build grid */
             for (i = 0; i < instance.rows; i++) {
                 for (j = 0; j < instance.cols; j++) {
                     var $n = $('<div>');
-                    $n.css('width', '10px');
-                    $n.css('height', '10px');
+                    $n.css('width', dim);
+                    $n.css('height', dim);
                     $n.css('background-color', 'white');
                     $n.css('float', 'left');
                     $n.css('display', 'inline');
@@ -103,6 +106,8 @@
                 $(this).css('border', 'none');
             });
 
+            /* Create the pen boxes. */
+            
             /* create pen boxes. */
             $.each(instance.colors, function(index, element) {
                 var $color = $('<div>', {id: element, style: "float:left"});
