@@ -53,6 +53,44 @@
      */
     $.fn.paintbox = function(configOrCommand, commandArgument) {
         var dataName = 'paintbox';
+        
+        var paintFill = function(instance, i, j, off, color) {
+            /* given some point, recursively crawl outward filling until a
+             * border is hit.
+             */
+            var eid = instance.elId;
+            var id = eid + '_' + i + ',' + j;
+            var cell = document.getElementById(id);
+            var current = $(cell).css('background-color');
+
+            /* XXX: support instance.off */
+            if (current != off) {
+                /* I'm not sure I should break out on this condition. */
+                return;
+            } else {
+                $(cell).css('background-color', color);
+            }
+
+            /* go up. */
+            if (i > 0) {
+                paintFill(instance, i-1, j, off, color);
+            }
+
+            /* go down. */
+            if (i < instance.rows) {
+                paintFill(instance, i+1, j, off, color);
+            }
+
+            /* go left. */
+            if (j > 0) {
+                paintFill(instance, i, j-1, off, color);
+            }
+
+            /* go right. */
+            if (j < instance.cols) {
+                paintFill(instance, i, j+1, off, color);
+            }
+        };
 
         var buildIt = function(instance) {
             var el = instance.el;
@@ -197,6 +235,7 @@
                     var dir = commandArgument.direction;
                     var len = commandArgument.length;
 
+                    /* XXX: could handle line with rect. ;) */
                     if (i < 0 || i >= instance.rows) {
                         throw Error("Invalid row: " + i);
                     }
@@ -293,6 +332,31 @@
                             $(cell).css('background-color', commandArgument.color);
                         }
                     }
+                });
+            } else if (configOrCommand === 'fill') {
+            	/* you want to update this here in case they call it a lot. */
+                return this.each(function() {
+                    var instance = $(this).data(dataName);
+                    var eid = instance.elId;
+                    var i = commandArgument.i;
+                    var j = commandArgument.j;
+                    /* Really I think it'll fill any color with another, so
+                     * you could click on a blue thing and turn it and all
+                     * other connected blue area.
+                     */
+
+                    if (i < 0 || i >= instance.rows) {
+                        throw Error("Invalid row: " + i);
+                    }
+                    if (j < 0 || j >= instance.cols) {
+                        throw Error("Invalid column: " + j);
+                    }
+
+                    var id = eid + '_' + i + ',' + j;
+                    var cell = document.getElementById(id);
+                    var current = $(cell).css('background-color');
+
+                    paintFill(instance, i, j, current, commandArgument.color);
                 });
             }
         }

@@ -162,6 +162,22 @@
             <td><code>CSS color string</code></td>
             <td>The color to use (does not need to be in palette)</td>
           </tr>
+          <tr>
+            <td rowspan='3'><code>'fill'</code></td>
+            <td>i</td>
+            <td><code>integer</code></td>
+            <td>the row, from 0 -> rowcount-1, (x0)</td>
+          </tr>
+          <tr>
+            <td>j</td>
+            <td><code>integer</code></td>
+            <td>the column, from 0 -> colcount-1, (y0)</td>
+          </tr>
+          <tr>
+            <td>color</td>
+            <td><code>CSS color string</code></td>
+            <td>The color to use (does not need to be in palette)</td>
+          </tr>
         </tbody>
       </table>
 
@@ -301,6 +317,29 @@ $(function() {
     $('#container_7').paintbox('rect', {i : 1, j: 2, i2: 1, j2: 5, color: 'black'});
     $('#container_7').paintbox('rect', {i : 3, j: 5, i2: 6, j2: 1, color: 'red'});
     $('#container_7').paintbox('rect', {i : 2, j: 8, i2: 6, j2: 8, color: 'blue'});
+});
+</script>
+
+      <h4>Programmatic paint fill</h4>
+      <p>A way to fill an area like the MS paint bucket tool.</p>
+      <pre class="prettyprint lang-js">
+$('#container_8').paintbox({rows : 10, cols: 11});
+$('#container_8').paintbox('rect', {i : 0, j: 0, i2: 9, j2: 10, color: 'red'});
+$('#container_8').paintbox('rect', {i : 1, j: 1, i2: 8, j2: 9, color: 'white'});
+$('#container_8').paintbox('line', {i : 1, j: 3, color: 'green', direction: 'down', length: 3});
+$('#container_8').paintbox('line', {i : 3, j: 4, color: 'green', direction: 'right', length: 3});
+$('#container_8').paintbox('fill', {i : 4, j: 6, color: 'blue'});
+</pre>
+      <p>I put a black background the div because it's default off-color is white.</p>
+      <div id='container_8' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+<script>
+$(function() {
+    $('#container_8').paintbox({rows : 10, cols: 11});
+    $('#container_8').paintbox('rect', {i : 0, j: 0, i2: 9, j2: 10, color: 'red'});
+    $('#container_8').paintbox('rect', {i : 1, j: 1, i2: 8, j2: 9, color: 'white'});
+    $('#container_8').paintbox('line', {i : 1, j: 3, color: 'green', direction: 'down', length: 3});
+    $('#container_8').paintbox('line', {i : 3, j: 4, color: 'green', direction: 'right', length: 3});
+    $('#container_8').paintbox('fill', {i : 4, j: 6, color: 'blue'});
 });
 </script>
 
