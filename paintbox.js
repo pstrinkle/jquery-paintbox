@@ -92,8 +92,7 @@
                     $n.css('background-color', 'white');
                     $n.css('float', 'left');
                     $n.css('display', 'inline');
-
-                    $n.attr('id', i + ',' + j);
+                    $n.attr('id', baseId + '_' + i + ',' + j);
                     $n.on('click', clicked);
                     $n.addClass(itm);
 
@@ -167,6 +166,136 @@
                 instance.penDown = false;
             });
         };
+
+        if (typeof configOrCommand == 'string') {
+            if (configOrCommand === 'cell') {
+                /* you want to update this here in case they call it a lot. */
+                return this.each(function() {
+                    var instance = $(this).data(dataName);
+                    var eid = instance.elId;
+                    var i = commandArgument.i;
+                    var j = commandArgument.j;
+                    
+                    if (i < 0 || i >= instance.rows) {
+                        throw Error("Invalid row: " + i);
+                    }
+                    if (j < 0 || j >= instance.cols) {
+                        throw Error("Invalid column: " + j);
+                    }
+
+                    var id = eid + '_' + i + ',' + j;
+                    var cell = document.getElementById(id);
+                    $(cell).css('background-color', commandArgument.color);
+                });
+            } else if (configOrCommand === 'line') {
+                /* you want to update this here in case they call it a lot. */
+                return this.each(function() {
+                    var instance = $(this).data(dataName);
+                    var eid = instance.elId;
+                    var i = commandArgument.i;
+                    var j = commandArgument.j;
+                    var dir = commandArgument.direction;
+                    var len = commandArgument.length;
+
+                    if (i < 0 || i >= instance.rows) {
+                        throw Error("Invalid row: " + i);
+                    }
+                    if (j < 0 || j >= instance.cols) {
+                        throw Error("Invalid column: " + j);
+                    }
+
+                    if (dir === 'left' && j - (len-1) < 0) {
+                        throw Error("Invalid length: " + len);
+                    } else if (dir === 'right' && j + (len-1) >= instance.cols) {
+                        throw Error("Invalid length: " + len);
+                    } else if (dir === 'up' && i - (len-1) < 0) {
+                        throw Error("Invalid length: " + len);
+                    } else if (dir === 'down' && i + (len-1) >= instance.rows) {
+                        throw Error("Invalid length: " + len);
+                    }
+
+                    if (dir === 'left' || dir === 'right') {
+                        var start = 0;
+                        var b = 0;
+                        if (dir === 'left') {
+                            start = j - len+1;
+                        } else {
+                            start = j;
+                        }
+
+                        j = start;
+
+                        for (b = 0; b < len; b++) {
+                            var this_j = j + b;
+                            var id = eid + '_' + i + ',' + this_j;
+                            var cell = document.getElementById(id);
+                            $(cell).css('background-color', commandArgument.color);
+                        }
+                    } else if (dir === 'up' || dir === 'down') {
+                        var start = 0;
+                        var b = 0;
+                        if (dir === 'up') {
+                            start = i - len+1;
+                        } else {
+                            start = i;
+                        }
+
+                        i = start;
+
+                        for (b = 0; b < len; b++) {
+                            var this_i = i + b;
+                            var id = eid + '_' + this_i + ',' + j;
+                            var cell = document.getElementById(id);
+                            $(cell).css('background-color', commandArgument.color);
+                        }
+                    } else {
+                        throw Error("Invalid direction: " + dir);
+                    }
+
+                    var id = eid + '_' + i + ',' + j;
+                    var cell = document.getElementById(id);
+                    $(cell).css('background-color', commandArgument.color);
+                });
+            } else if (configOrCommand === 'rect') {
+                /* you want to update this here in case they call it a lot. */
+                return this.each(function() {
+                    var instance = $(this).data(dataName);
+                    var eid = instance.elId;
+                    var i1 = commandArgument.i;
+                    var j1 = commandArgument.j;
+                    var i2 = commandArgument.i2;
+                    var j2 = commandArgument.j2;
+
+                    if (i1 < 0 || i1 >= instance.rows) {
+                        throw Error("Invalid row: " + i1);
+                    }
+                    if (j1 < 0 || j1 >= instance.cols) {
+                        throw Error("Invalid column: " + j1);
+                    }
+                    if (i2 < 0 || i2 >= instance.rows) {
+                        throw Error("Invalid row: " + i2);
+                    }
+                    if (j2 < 0 || j2 >= instance.cols) {
+                        throw Error("Invalid column: " + j2);
+                    }                    
+
+                    /* find upper left point. */
+                    var x0 = (i1 > i2) ? i2 : i1;
+                    var y0 = (j1 > j2) ? j2 : j1;
+                    /* find lower right point. */
+                    var x1 = (i1 > i2) ? i1 : i2;
+                    var y1 = (j1 > j2) ? j1 : j2;
+
+                    for (i = x0; i <= x1; i++) {
+                        for (j = y0; j <= y1; j++) {
+                            var id = eid + '_' + i + ',' + j;
+                            var cell = document.getElementById(id);
+                            $(cell).css('background-color', commandArgument.color);
+                        }
+                    }
+                });
+            }
+        }
 
         return this.each(function() {
             var el = $(this), instance = el.data(dataName),

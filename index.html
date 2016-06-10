@@ -87,14 +87,80 @@
       <table class="table">
         <thead>
           <tr>
-            <th>Methods</th>
-            <th>Params</th>
+            <th>method</th>
+            <th>param</th>
+            <th>type</th>
+            <th>description</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><code>'mark'</code> or color, not sure yet.</td>
-            <td></td>
+            <td rowspan='3'><code>'cell'</code></td>
+            <td>i</td>
+            <td><code>integer</code></td>
+            <td>the row, from 0 -> rowcount-1</td>
+          </tr>
+          <tr>
+            <td>j</td>
+            <td><code>integer</code></td>
+            <td>the column, from 0 -> colcount-1</td>
+          </tr>
+          <tr>
+            <td>color</td>
+            <td><code>CSS color string</code></td>
+            <td>The color to use (does not need to be in palette)</td>
+          </tr>
+          <tr>
+            <td rowspan='5'><code>'line'</code></td>
+            <td>i</td>
+            <td><code>integer</code></td>
+            <td>the row, from 0 -> rowcount-1</td>
+          </tr>
+          <tr>
+            <td>j</td>
+            <td><code>integer</code></td>
+            <td>the column, from 0 -> colcount-1</td>
+          </tr>
+          <tr>
+            <td>color</td>
+            <td><code>CSS color string</code></td>
+            <td>The color to use (does not need to be in palette)</td>
+          </tr>
+          <tr>
+            <td>direction</td>
+            <td><code>string</code></td>
+            <td>The direction from the point, <code>left</code>, <code>right</code>, <code>up</code>, <code>down</code>.</td>
+          </tr>
+          <tr>
+            <td>length</td>
+            <td><code>integer</code></td>
+            <td>the number of blocks</td>
+          </tr>
+          <tr>
+            <td rowspan='5'><code>'rect'</code></td>
+            <td>i</td>
+            <td><code>integer</code></td>
+            <td>the row, from 0 -> rowcount-1, (x0)</td>
+          </tr>
+          <tr>
+            <td>j</td>
+            <td><code>integer</code></td>
+            <td>the column, from 0 -> colcount-1, (y0)</td>
+          </tr>
+          <tr>
+            <td>i2</td>
+            <td><code>integer</code></td>
+            <td>the row, from 0 -> rowcount-1, (x1)</td>
+          </tr>
+          <tr>
+            <td>j2</td>
+            <td><code>integer</code></td>
+            <td>the column, from 0 -> colcount-1, (y1)</td>
+          </tr>
+          <tr>
+            <td>color</td>
+            <td><code>CSS color string</code></td>
+            <td>The color to use (does not need to be in palette)</td>
           </tr>
         </tbody>
       </table>
@@ -140,12 +206,101 @@ $(function() {
       <h4>Specified other colors</h4>
       <p>Replace the colors with our own.</p>
       <pre class="prettyprint lang-js">
-$('#container_4').paintbox({colors: ['red', 'purple', 'fuchsia', 'green']});</pre>
+$('#container_4').paintbox({colors: ['red', 'purple', 'fuchsia', 'green'], rows: 10, cols: 10});</pre>
       <p>I put a black background the div because it's default off-color is white.</p>
       <div id='container_4' style='background-color:black;border:5px solid black;display:table-cell;'></div>
 <script>
 $(function() {
-    $('#container_4').paintbox({colors: ['red', 'purple', 'fuchsia', 'green']});
+    $('#container_4').paintbox({colors: ['red', 'purple', 'fuchsia', 'green'], rows: 10, cols: 10});
+});
+</script>
+
+      <h4>Programmatic cell update</h4>
+      <p>You can do this, or you can really just trigger a click if you're so 
+      inclined, that however will use the current pen color &amp; settings.</p>
+      <pre class="prettyprint lang-js">
+$('#container_5').paintbox({colors: ['red', 'purple', 'fuchsia', 'green'], rows: 10, cols: 10});
+$('#container_5').paintbox('cell', {i : 4, j: 5, color: 'black'});</pre>
+      <p>I put a black background the div because it's default off-color is white.</p>
+      <div id='container_5' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+<script>
+$(function() {
+    $('#container_5').paintbox({colors: ['red', 'purple', 'fuchsia', 'green'], rows: 10, cols: 10});
+    $('#container_5').paintbox('cell', {i : 4, j: 5, color: 'black'});
+});
+</script>
+
+      <h4>Programmatic line drawing</h4>
+      <p>Does not presently support diagonal lines.  I may implement this if I switch to a canvas base.</p>
+      <p>I included a lot of failing varities to test and for fun.  The following four bullets should hold errors.</p>
+      <ul>
+        <li id='left_error_length'></li>
+        <li id='right_error_length'></li>
+        <li id='up_error_length'></li>
+        <li id='down_error_length'></li>
+      </ul>
+      <pre class="prettyprint lang-js">
+$('#container_6').paintbox({rows : 10, cols: 11});
+$('#container_6').paintbox('line', {i : 2, j: 5, color: 'black', direction: 'left', length: 5});
+$('#container_6').paintbox('line', {i : 4, j: 4, color: 'red', direction: 'right', length: 5});
+$('#container_6').paintbox('line', {i : 4, j: 9, color: 'green', direction: 'up', length: 5});
+$('#container_6').paintbox('line', {i : 5, j: 2, color: 'blue', direction: 'down', length: 5});
+</pre>
+      <p>I put a black background the div because it's default off-color is white.</p>
+      <div id='container_6' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+<script>
+$(function() {
+    $('#container_6').paintbox({rows : 10, cols: 11});
+    try {
+        $('#container_6').paintbox('line', {i : 1, j: 5, color: 'black', direction: 'left', length: 7});
+    } catch(err) {
+        $('#left_error_length').text(err.message);
+    }
+
+    $('#container_6').paintbox('line', {i : 2, j: 5, color: 'black', direction: 'left', length: 5});
+    
+    try {
+        $('#container_6').paintbox('line', {i : 3, j: 4, color: 'red', direction: 'right', length: 8});
+    } catch(err) {
+        $('#right_error_length').text(err.message);
+    }
+    
+    $('#container_6').paintbox('line', {i : 4, j: 4, color: 'red', direction: 'right', length: 5});
+
+    try {
+        $('#container_6').paintbox('line', {i : 3, j: 0, color: 'green', direction: 'up', length: 5});
+    } catch(err) {
+        $('#up_error_length').text(err.message);
+    }
+
+    $('#container_6').paintbox('line', {i : 4, j: 9, color: 'green', direction: 'up', length: 5});
+    
+    try {
+        $('#container_6').paintbox('line', {i : 5, j: 5, color: 'blue', direction: 'down', length: 6});
+    } catch(err) {
+        $('#down_error_length').text(err.message);
+    }
+
+    $('#container_6').paintbox('line', {i : 5, j: 2, color: 'blue', direction: 'down', length: 5});
+});
+</script>
+
+      <h4>Programmatic rectangles</h4>
+      <p>This code finds the upper left and lower right points and fills it in from there.</p>
+      <pre class="prettyprint lang-js">
+$('#container_7').paintbox({rows : 10, cols: 11});
+$('#container_7').paintbox('rect', {i : 1, j: 2, i2: 1, j2: 5, color: 'black'});
+$('#container_7').paintbox('rect', {i : 3, j: 5, i2: 6, j2: 1, color: 'red'});
+$('#container_7').paintbox('rect', {i : 2, j: 8, i2: 6, j2: 8, color: 'blue'});
+</pre>
+      <p>I put a black background the div because it's default off-color is white.</p>
+      <div id='container_7' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+<script>
+$(function() {
+    $('#container_7').paintbox({rows : 10, cols: 11});
+    $('#container_7').paintbox('rect', {i : 1, j: 2, i2: 1, j2: 5, color: 'black'});
+    $('#container_7').paintbox('rect', {i : 3, j: 5, i2: 6, j2: 1, color: 'red'});
+    $('#container_7').paintbox('rect', {i : 2, j: 8, i2: 6, j2: 8, color: 'blue'});
 });
 </script>
 
