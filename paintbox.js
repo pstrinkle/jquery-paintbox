@@ -133,7 +133,7 @@
                     $n.css('display', 'inline');
                     $n.attr('id', baseId + '_' + i + ',' + j);
                     if (instance.interactive) {
-                        $n.on('click', clicked);	
+                        $n.on('click', clicked);
                     }
 
                     $n.addClass(itm);
