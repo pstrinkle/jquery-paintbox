@@ -79,6 +79,12 @@
             <td>...</td>
             <td>Override colors for pallete via array of CSS colors.</td>
           </tr>
+          <tr>
+            <td>interactive</td>
+            <td>boolean</td>
+            <td><code>true</code></td>
+            <td>Whether the paintbox should expect mouse input and draw a palette.</td>
+          </tr>
         </tbody>
       </table>
       </div>
@@ -231,9 +237,23 @@ $(function() {
 });
 </script>
 
+      <h4>Programmatic only</h4>
+      <p>You can make the programmatic updates in any mode, however if you only plan to then you can set interactive to false.</p>
+      <pre class="prettyprint lang-js">
+$('#container_9').paintbox({interactive: false, rows: 10, cols: 10});
+$('#container_9').paintbox('cell', {i : 4, j: 5, color: 'black'});</pre>
+      <p>I put a black background the div because it's default off-color is white.</p>
+      <div id='container_9' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+<script>
+$(function() {
+	$('#container_9').paintbox({interactive: false, rows: 10, cols: 10});
+    $('#container_9').paintbox('cell', {i : 4, j: 5, color: 'black'});
+});
+</script>
+
       <h4>Programmatic cell update</h4>
       <p>You can do this, or you can really just trigger a click if you're so 
-      inclined, that however will use the current pen color &amp; settings.</p>
+      inclined, that however will use the current pen color &amp; settings. -- <strong>triggering the click doesn't work in non-interactive mode.</strong></p>
       <pre class="prettyprint lang-js">
 $('#container_5').paintbox({colors: ['red', 'purple', 'fuchsia', 'green'], rows: 10, cols: 10});
 $('#container_5').paintbox('cell', {i : 4, j: 5, color: 'black'});</pre>

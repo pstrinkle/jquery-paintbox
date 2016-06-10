@@ -29,6 +29,7 @@ You should specify options like in usage example above.
 | cols | integer | `50` | Number of columns. |
 | cell | integer | `10` | Cell dimension in pixels |
 | colors | array | ... | Override colors for pallete via array of CSS colors. |
+| interactive | boolean | `true` | Whether the paintbox should expect mouse input and draw a palette. |
 
 Methods
 -------
