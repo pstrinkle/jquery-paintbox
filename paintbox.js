@@ -33,6 +33,7 @@
 
         el: null,
         elId: '',
+        interactive: true,
         penColor: 'black',
         penDown: false,
         cols: 50,
@@ -131,79 +132,87 @@
                     $n.css('float', 'left');
                     $n.css('display', 'inline');
                     $n.attr('id', baseId + '_' + i + ',' + j);
-                    $n.on('click', clicked);
+                    if (instance.interactive) {
+                        $n.on('click', clicked);	
+                    }
+
                     $n.addClass(itm);
 
                     $dest.append($n);
                 }
             }
 
-            /* this won't work with multiple paintbox's on the same page. */
-            $(mId + ' .box').hover(function(event) {
-                /* if pen is selected, and mousedown has been activated, 
-                 * then we draw, otherwise we temporarily hover.
-                 */                        
-                $(this).css('border', '1px solid ' + instance.penColor);
+            if (instance.interactive) {
+                /* this won't work with multiple paintbox's on the same page. */
+                $(mId + ' .box').hover(function(event) {
+                    /* if pen is selected, and mousedown has been activated, 
+                     * then we draw, otherwise we temporarily hover.
+                     */                        
+                    $(this).css('border', '1px solid ' + instance.penColor);
 
-                if (instance.penDown) {
-                    $(this).css('background-color', instance.penColor);
-                }
-            }, function(event) {
-                /* if pen is selected, and mousedown has been activated, 
-                 * don't undo things.
-                 */
-                $(this).css('border', 'none');
-            });
-
-            /* Create the pen boxes. */
-            if (instance.colors.length == 0) {
-                throw Error("No color palette specified!");
-            }
-
-            /* set default starting color to one of the provided (or default) */
-            instance.penColor = instance.colors[0];
-
-            /* create pen boxes. */
-            $.each(instance.colors, function(index, element) {
-                var $color = $('<div>', {id: 'color_' + index, style: "float:left"});
-                $color.data('color', element);
-                $pens.append($color);
-            });
-
-            /* just do this next. */
-            $.each($pens.children(), function(index, element) {
-                $(element).css('width', '10px');
-                $(element).css('height', '10px');
-                $(element).css('float', 'left');
-                $(element).css('display', 'inline');
-
-                /* Seems silly but originally we had spacer cells that didn't 
-                 * have IDs.
-                 */
-                var id = $(element).attr('id');
-                if (id) {
-                    var color = $(element).data('color');
-                    $(element).css('background-color', color);
-                    $(element).on('click', colorSelect);
-
-                    if (id === 'black') {
-                        $(element).css('border', '1px solid white');
-                    } else {
-                        $(element).css('border', '1px solid black');
+                    if (instance.penDown) {
+                        $(this).css('background-color', instance.penColor);
                     }
-                }
-            });
+                }, function(event) {
+                    /* if pen is selected, and mousedown has been activated, 
+                     * don't undo things.
+                     */
+                    $(this).css('border', 'none');
+                });
 
-            $dest.on('mousedown', function(event) {
-                instance.penDown = true;
-            });
-            $dest.on('mouseup', function(event) {
-                instance.penDown = false;
-            });
-            $dest.on('mouseleave', function(event) {
-                instance.penDown = false;
-            });
-        };
+                /* Create the pen boxes. */
+                if (instance.colors.length == 0) {
+                    throw Error("No color palette specified!");
+                }
+
+                /* Set default starting color to one of the provided (or 
+                 * default)
+                 */
+                instance.penColor = instance.colors[0];
+
+                /* create pen boxes. */
+                $.each(instance.colors, function(index, element) {
+                    var $color = $('<div>', {id: 'color_' + index, style: "float:left"});
+                    $color.data('color', element);
+                    $pens.append($color);
+                });
+
+                /* just do this next. */
+                $.each($pens.children(), function(index, element) {
+                    $(element).css('width', '10px');
+                    $(element).css('height', '10px');
+                    $(element).css('float', 'left');
+                    $(element).css('display', 'inline');
+
+                    /* Seems silly but originally we had spacer cells that didn't 
+                     * have IDs.
+                     */
+                    var id = $(element).attr('id');
+                    if (id) {
+                        var color = $(element).data('color');
+                        $(element).css('background-color', color);
+                        $(element).on('click', colorSelect);
+
+                        if (id === 'black') {
+                            $(element).css('border', '1px solid white');
+                        } else {
+                            $(element).css('border', '1px solid black');
+                        }
+                    }
+                });
+
+                $dest.on('mousedown', function(event) {
+                    instance.penDown = true;
+                });
+                $dest.on('mouseup', function(event) {
+                    instance.penDown = false;
+                });
+                $dest.on('mouseleave', function(event) {
+                    instance.penDown = false;
+                });
+
+            } /* end interactive only */
+        }; /* end buildIt() */
 
         if (typeof configOrCommand == 'string') {
             if (configOrCommand === 'cell') {
@@ -334,7 +343,7 @@
                     }
                 });
             } else if (configOrCommand === 'fill') {
-            	/* you want to update this here in case they call it a lot. */
+                /* you want to update this here in case they call it a lot. */
                 return this.each(function() {
                     var instance = $(this).data(dataName);
                     var eid = instance.elId;
@@ -377,7 +386,7 @@
 
                 instance = new PaintBox(config);
                 el.data(dataName, instance);
-                    
+
                 buildIt(instance);
             }
         });
