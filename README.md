@@ -1,6 +1,8 @@
 # jquery-paintbox
 jQuery plugin that draws an interactive paint grid similar to MS Paint (also support non-interactive mode for programmatic access)
 
+[![Latest release](https://img.shields.io/github/release/pstrinkle/jquery-paintbox.svg)](https://github.com/pstrinkle/jquery-paintbox/releases/latest)
+
 Plans
 -----
 
