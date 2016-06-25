@@ -32,6 +32,7 @@ You should specify options like in usage example above.
 | cell | integer | `10` | Cell dimension in pixels |
 | colors | array | ... | Override colors for pallete via array of CSS colors. |
 | interactive | boolean | `true` | Whether the paintbox should expect mouse input and draw a palette. |
+| offColor | css string | `white` | Set the paintbox background color. |
 
 Methods
 -------

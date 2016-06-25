@@ -85,6 +85,12 @@
             <td><code>true</code></td>
             <td>Whether the paintbox should expect mouse input and draw a palette.</td>
           </tr>
+          <tr>
+            <td>offColor</td>
+            <td>css color string</td>
+            <td>white</td>
+            <td>Set the paintbox background color.</td>
+          </tr>
         </tbody>
       </table>
       </div>
@@ -360,6 +366,19 @@ $(function() {
     $('#container_8').paintbox('line', {i : 1, j: 3, color: 'green', direction: 'down', length: 3});
     $('#container_8').paintbox('line', {i : 3, j: 4, color: 'green', direction: 'right', length: 3});
     $('#container_8').paintbox('fill', {i : 4, j: 6, color: 'blue'});
+});
+</script>
+
+      <h4>Different background coloe</h4>
+      <p>A way to control the background color.</p>
+      <pre class="prettyprint lang-js">
+$('#container_10').paintbox({rows : 10, cols: 11, offColor: 'blue'});
+</pre>
+      <p>I put a black background the div because it's default off-color is white.</p>
+      <div id='container_10' style='background-color:black;border:5px solid black;display:table-cell;'></div>
+<script>
+$(function() {
+    $('#container_10').paintbox({rows : 10, cols: 11, offColor: 'blue'});
 });
 </script>
 
