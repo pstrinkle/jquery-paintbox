@@ -3,7 +3,7 @@
  * similar to MS Paint.
  * URL: http://pstrinkle.github.com/jquery-paintbox
  * Author: Patrick Trinkle <https://github.com/pstrinkle>
- * Version: 0.1
+ * Version: 0.1.1
  * Copyright 2016 Patrick Trinkle
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,6 +36,7 @@
         interactive: true,
         penColor: 'black',
         penDown: false,
+        offColor: 'white',
         cols: 50,
         rows: 50,
         cell: 10,
@@ -128,7 +129,7 @@
                     var $n = $('<div>');
                     $n.css('width', dim);
                     $n.css('height', dim);
-                    $n.css('background-color', 'white');
+                    $n.css('background-color', instance.offColor);
                     $n.css('float', 'left');
                     $n.css('display', 'inline');
                     $n.attr('id', baseId + '_' + i + ',' + j);
